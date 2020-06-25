@@ -57,12 +57,18 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" id="iwr-AI-bP2">
+                                <rect key="frame" x="0.0" y="429" width="414" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="color" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Movies" id="n9o-vT-hUb"/>
                     <connections>
+                        <outlet property="loadingActivityIndicator" destination="iwr-AI-bP2" id="wqm-hF-fno"/>
                         <outlet property="tableView" destination="hiR-Zr-cch" id="P62-O1-yfZ"/>
                     </connections>
                 </viewController>
@@ -104,6 +110,11 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="gG0-Fi-Rw2">
+                                        <rect key="frame" x="189" y="371" width="37" height="37"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="color" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <viewLayoutGuide key="contentLayoutGuide" id="d5G-gL-BA3"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="KjV-qe-d51"/>
@@ -115,6 +126,7 @@
                     <navigationItem key="navigationItem" id="xHH-cT-26C"/>
                     <connections>
                         <outlet property="backdropView" destination="Hbc-7B-q9u" id="77t-jh-eZl"/>
+                        <outlet property="loadingActivityIndicator" destination="gG0-Fi-Rw2" id="rTE-dw-roL"/>
                         <outlet property="posterView" destination="52M-Kz-guY" id="6zs-mg-LI7"/>
                         <outlet property="synopsisLabel" destination="ZXS-kF-D9T" id="YrY-l6-aKg"/>
                         <outlet property="titleLabel" destination="UAf-YR-Hx2" id="yGG-qg-ui3"/>

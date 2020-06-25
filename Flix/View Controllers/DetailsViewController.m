@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *backdropView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *synopsisLabel;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingActivityIndicator;
 
 @end
 
@@ -22,10 +23,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [self.loadingActivityIndicator startAnimating];
+    
     NSString *baseURLStr = @"https://image.tmdb.org/t/p/w500";
     NSString *posterURLStr = self.movie[@"poster_path"];
     NSString *fullPosterURLStr = [baseURLStr stringByAppendingString:posterURLStr];
     NSURL *posterURL = [NSURL URLWithString:fullPosterURLStr];
+    
     [self.posterView setImageWithURL:posterURL];
     
 
@@ -38,6 +43,8 @@
     self.synopsisLabel.text = self.movie[@"overview"];
     [self.titleLabel sizeToFit];
     [self.synopsisLabel sizeToFit];
+    
+    [self.loadingActivityIndicator stopAnimating];
 }
 
 /*
