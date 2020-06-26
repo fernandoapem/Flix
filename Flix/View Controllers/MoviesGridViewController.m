@@ -9,21 +9,32 @@
 #import "MoviesGridViewController.h"
 #import "MovieCollectionCell.h"
 #import "UIImageView+AFNetworking.h"
-@interface MoviesGridViewController () <UICollectionViewDataSource,UICollectionViewDelegate>
+#import "DetailsViewController.h"
+
+@interface MoviesGridViewController () <UICollectionViewDataSource,UICollectionViewDelegate,UISearchBarDelegate>
 @property (nonatomic, strong) NSArray *movies;
+@property (nonatomic, strong) NSArray *filteredMovies;
 @property (weak, nonatomic) IBOutlet UICollectionView *movieCollectionView;
+
+
+@property (weak, nonatomic) IBOutlet UISearchBar *movieSearchBar;
 
 @end
 
 @implementation MoviesGridViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     self.movieCollectionView.dataSource = self;
     self.movieCollectionView.delegate = self;
+    self.movieSearchBar.delegate = self;
+    
     [self fetchMovies];
     
+    
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.movieCollectionView.collectionViewLayout;
+    
     
     layout.minimumLineSpacing = 5;
     layout.minimumInteritemSpacing = 5;
@@ -57,7 +68,6 @@
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         
         
-        
         if (error != nil) {
             UIAlertController *alert = [self startAlert];
             [self presentViewController:alert animated:YES completion:^{
@@ -69,25 +79,54 @@
             NSDictionary *dataDictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
             
             self.movies = dataDictionary[@"results"];
+            self.filteredMovies = self.movies;
+            
+            //            NSLog(@"%@",self.movies[0][@"title"]);
             
         }
         [self.movieCollectionView reloadData];
     }];
     [task resume];
 }
-/*
- #pragma mark - Navigation
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    
+    if (searchText.length != 0) {
+        
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSDictionary *evaluatedObject, NSDictionary *bindings) {
+            return [evaluatedObject[@"title"] containsString:searchText];
+        }];
+        self.filteredMovies = [self.movies filteredArrayUsingPredicate:predicate];
+        
+       // NSLog(@"%@", self.filteredMovies);
+        
+    }
+    else {
+        self.filteredMovies = self.movies;
+    }
+    
+    [self.movieCollectionView reloadData];
  
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+}
+
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+    UICollectionViewCell *tappedPoster = sender;
+    NSIndexPath *indexPath = [self.movieCollectionView indexPathForCell:tappedPoster];
+    
+    NSDictionary *movie = self.filteredMovies[indexPath.row];
+    DetailsViewController *detailViewController = [segue destinationViewController];
+    detailViewController.movie = movie;
+}
 
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    MovieCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MovieCollectionCell" forIndexPath:indexPath];
-    NSDictionary *movie = self.movies[indexPath.item];
+    
+    MovieCollectionCell *cell = [self.movieCollectionView dequeueReusableCellWithReuseIdentifier:@"MovieCollectionCell" forIndexPath:indexPath];
+   
+    NSDictionary *movie = self.filteredMovies[indexPath.item];
     NSString *baseURLStr = @"https://image.tmdb.org/t/p/w500";
     NSString *posterURLStr = movie[@"poster_path"];
     NSString *fullPosterURLStr = [baseURLStr stringByAppendingString:posterURLStr];
@@ -95,11 +134,13 @@
     NSURL *posterURL = [NSURL URLWithString:fullPosterURLStr];
     cell.posterView.image = nil;
     [cell.posterView setImageWithURL:posterURL];
+    
+    
     return cell;
 }
 
 - (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.movies.count;
+    return self.filteredMovies.count;
 }
 
 

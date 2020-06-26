@@ -33,6 +33,7 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchMovies) forControlEvents:UIControlEventValueChanged];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
+    
 }
 - (UIAlertController *)startAlert{
     NSString *title = @"Cannot Get Movies";
@@ -40,7 +41,7 @@
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:notice preferredStyle:(UIAlertControllerStyleAlert)];
     
     UIAlertAction *tryAgainAction = [UIAlertAction actionWithTitle:@"Try Again" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-    {
+                                     {
         [self fetchMovies];
     }];
     
@@ -66,14 +67,12 @@
         }
         else {
             NSDictionary *dataDictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-            NSLog(@"%@",dataDictionary);
             
-            // TODO: Get the array of movies
+            
             self.movies = dataDictionary[@"results"];
             
             [self.tableView reloadData];
-            // TODO: Store the movies in a property to use elsewhere
-            // TODO: Reload your table view data
+
         }
         [self.refreshControl endRefreshing];
     }];
@@ -86,6 +85,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MovieCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MovieCell"];
+    UIView *backgroundView = [[UIView alloc] init];
+    backgroundView.backgroundColor = UIColor.grayColor;
+    cell.selectedBackgroundView = backgroundView;
     
     NSDictionary *movie = self.movies[indexPath.row];
     cell.titleLabel.text = movie[@"title"];
@@ -111,6 +113,7 @@
     // Pass the selected object to the new view controller.
     UITableViewCell *tappedCell = sender;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSDictionary *movie = self.movies[indexPath.row];
     
     DetailsViewController *detailViewController = [segue destinationViewController];

@@ -16,6 +16,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *synopsisLabel;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingActivityIndicator;
 
+
+@property (weak, nonatomic) IBOutlet UILabel *releaseLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *ratingLabel;
 @end
 
 @implementation DetailsViewController
@@ -41,8 +45,17 @@
     
     self.titleLabel.text = self.movie[@"title"];
     self.synopsisLabel.text = self.movie[@"overview"];
+    
+    self.releaseLabel.text = self.movie[@"release_date"];
+    NSString *str = [NSString stringWithFormat:@"%@",self.movie[@"vote_average"]];
+    self.ratingLabel.text = str;
+
+
     [self.titleLabel sizeToFit];
     [self.synopsisLabel sizeToFit];
+    
+    [self.releaseLabel sizeToFit];
+    [self.ratingLabel sizeToFit];
     
     [self.loadingActivityIndicator stopAnimating];
 }
