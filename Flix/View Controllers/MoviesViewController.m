@@ -25,6 +25,9 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    navigationBar.titleTextAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:30],NSForegroundColorAttributeName :UIColor.systemYellowColor};
+    
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
@@ -72,7 +75,7 @@
             self.movies = dataDictionary[@"results"];
             
             [self.tableView reloadData];
-
+            
         }
         [self.refreshControl endRefreshing];
     }];

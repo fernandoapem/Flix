@@ -15,8 +15,6 @@
 @property (nonatomic, strong) NSArray *movies;
 @property (nonatomic, strong) NSArray *filteredMovies;
 @property (weak, nonatomic) IBOutlet UICollectionView *movieCollectionView;
-
-
 @property (weak, nonatomic) IBOutlet UISearchBar *movieSearchBar;
 
 @end
@@ -26,6 +24,8 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    navigationBar.titleTextAttributes = @{NSFontAttributeName : [UIFont boldSystemFontOfSize:30],NSForegroundColorAttributeName :UIColor.systemYellowColor};
     self.movieCollectionView.dataSource = self;
     self.movieCollectionView.delegate = self;
     self.movieSearchBar.delegate = self;
@@ -97,7 +97,7 @@
         }];
         self.filteredMovies = [self.movies filteredArrayUsingPredicate:predicate];
         
-       // NSLog(@"%@", self.filteredMovies);
+        // NSLog(@"%@", self.filteredMovies);
         
     }
     else {
@@ -105,7 +105,15 @@
     }
     
     [self.movieCollectionView reloadData];
- 
+    
+}
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    self.movieSearchBar.showsCancelButton = YES;
+}
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    self.movieSearchBar.showsCancelButton = NO;
+    self.movieSearchBar.text = @"";
+    [self.movieSearchBar resignFirstResponder];
 }
 
 #pragma mark - Navigation
@@ -125,7 +133,7 @@
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     MovieCollectionCell *cell = [self.movieCollectionView dequeueReusableCellWithReuseIdentifier:@"MovieCollectionCell" forIndexPath:indexPath];
-   
+    
     NSDictionary *movie = self.filteredMovies[indexPath.item];
     NSString *baseURLStr = @"https://image.tmdb.org/t/p/w500";
     NSString *posterURLStr = movie[@"poster_path"];
