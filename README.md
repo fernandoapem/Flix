@@ -31,6 +31,7 @@ The following **optional** features are implemented:
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
 1.The Search Bar Feature
+
 2.Collection Views
 
 ## Video Walkthrough
@@ -45,7 +46,7 @@ Here's a screenshot of the network error message feature:
 
 <img src = 'http://g.recordit.co/04rpMbSonl.gif' title='Network Error' width='' alt='Network Error'/>
 
-GIF created with [LiceCap](http://www.cockos.com/licecap/).
+GIF created with [RecordIt](https://recordit.co/).
 
 ## Notes
 
