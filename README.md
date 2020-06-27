@@ -52,6 +52,12 @@ GIF created with [RecordIt](https://recordit.co/).
 
 Describe any challenges encountered while building the app.
 
+-Implementing the Search Bar Feature
+
+-Initially working with the Collection View
+
+-Ensuring the highlight selection when a cell is tapped dissipates after it's either selected or not longer tapped
+
 ## Credits
 
 List an 3rd party libraries, icons, graphics, or other assets you used in your app.
